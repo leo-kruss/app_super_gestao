@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'PrincipalController@principal')
-    ->name('site.index');
+    ->name('site.index')
+    ->middleware('log.acesso');
 
 Route::get('/sobre-nos', 'SobreNosController@sobreNos')
     ->name('site.sobrenos');
@@ -17,7 +18,7 @@ Route::post('/contato', 'ContatoController@salvar')
 Route::get('/login', function(){ return 'Login'; })
     ->name('site.login');
 
-Route::prefix('/app')->group(function(){
+Route::middleware('autenticacao:padrao')->prefix('/app')->group(function(){
     Route::get('/clientes', function(){ return 'Clientes'; })
         ->name('app.clientes');
 
@@ -26,6 +27,7 @@ Route::prefix('/app')->group(function(){
 
     Route::get('/produtos', function(){ return 'Produtos'; })
         ->name('app.produtos');
+
 });
 
 Route::get('/teste/{p1}/{p2}', 'TesteController@teste')->name('teste');
